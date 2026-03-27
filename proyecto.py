@@ -379,8 +379,12 @@ def cancelar_eliminar_visita():
     confirmacion = input(f"¿Confirma la cancelación de la visita de {visita['nombre']}? (S/N): ").upper()
     
     if confirmacion == "S":
-        visita['estado'] = "cancelada"
-        print("✅ Visita cancelada exitosamente.")
+        confirmacion = input(f"¿Realmente desea la cancelación de la visita de {visita['nombre']}? (S/N): ").upper()
+        if confirmacion == "S":
+            visita['estado'] = "cancelada"
+            print("✅ Visita cancelada exitosamente.")
+        else:
+            print("❌ Operación cancelada.")
     else:
         print("❌ Operación cancelada.")
 
