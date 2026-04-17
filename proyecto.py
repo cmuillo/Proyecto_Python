@@ -87,75 +87,155 @@ def registrar_visita():
     
     Proceso:
     1. Solicita datos del visitante (nombre, identificación, destino, motivo, horarios)
-    2. Valida que todos los datos sean obligatorios
+    2. Valida que todos los datos sean obligatorios (pide nuevamente si están vacíos)
     3. Pregunta si el visitante ingresa con vehículo
     4. Si hay vehículo, captura datos del mismo (placa, marca, modelo, color, tipo)
     5. Crea un diccionario con toda la información
     6. Agrupa el registro a la lista global de visitas
     7. Muestra confirmación con el ID asignado
     
-    La función usa validación básica para asegurar que no se registren datos vacíos
-    y crea un nuevo ID único para cada visita mediante obtener_id_visita()
+    La función usa validación con bucles 'while' para asegurar que no se registren datos vacíos
+    sin que el usuario tenga que empezar desde el principio. Pide nuevamente si un campo está vacío.
     """
     print("\n--- REGISTRO DE NUEVA VISITA ---")
     
     # ============ CAPTURA DE DATOS DEL VISITANTE ============
     # Se solicitan los datos personales del visitante que desea ingresar al edificio
-    nombre = input("Nombre del visitante: ").strip()
-    if not nombre:
-        print("❌ El nombre es obligatorio.")
-        return
+    # Usa un bucle while para pedir el campo nuevamente si está vacío
+    # Permite escribir "salir" para cancelar el registro en cualquier momento
+    while True:
+        nombre = input("Nombre del visitante (o 'salir' para cancelar): ").strip()
+        if nombre.lower() == "salir":
+            print("❌ Registro cancelado.")
+            return
+        if nombre:
+            break
+        print("❌ El nombre es obligatorio. Por favor, intente de nuevo.")
     
     # La identificación puede ser cédula, TIM, pasaporte, etc.
-    identificacion = input("Número de identificación (cédula, TIM, Pasaporte): ").strip()
-    if not identificacion:
-        print("❌ La identificación es obligatoria.")
-        return
+    # Pide nuevamente si el campo está vacío
+    while True:
+        identificacion = input("Número de identificación (cédula, TIM, Pasaporte, o 'salir'): ").strip()
+        if identificacion.lower() == "salir":
+            print("❌ Registro cancelado.")
+            return
+        if identificacion:
+            break
+        print("❌ La identificación es obligatoria. Por favor, intente de nuevo.")
     
     # Apartamento, casa o unidad a la que se dirige el visitante
-    apartamento = input("Apartamento, casa o unidad a la que se dirige: ").strip()
-    if not apartamento:
-        print("❌ La unidad destino es obligatoria.")
-        return
+    # Pide nuevamente si el campo está vacío
+    while True:
+        apartamento = input("Apartamento, casa o unidad (o 'salir'): ").strip()
+        if apartamento.lower() == "salir":
+            print("❌ Registro cancelado.")
+            return
+        if apartamento:
+            break
+        print("❌ La unidad destino es obligatoria. Por favor, intente de nuevo.")
     
     # Motivo de la visita (reunión, entrega, visita social, etc.)
-    motivo = input("Motivo de la visita: ").strip()
-    if not motivo:
-        print("❌ El motivo es obligatorio.")
-        return
+    # Pide nuevamente si el campo está vacío
+    while True:
+        motivo = input("Motivo de la visita (o 'salir'): ").strip()
+        if motivo.lower() == "salir":
+            print("❌ Registro cancelado.")
+            return
+        if motivo:
+            break
+        print("❌ El motivo es obligatorio. Por favor, intente de nuevo.")
     
     # Hora planeada de entrada en formato HH:MM
-    hora_entrada = input("Hora planeada de entrada (ej: 14:30): ").strip()
-    if not hora_entrada:
-        print("❌ La hora de entrada es obligatoria.")
-        return
+    # Pide nuevamente si el campo está vacío
+    while True:
+        hora_entrada = input("Hora planeada de entrada (ej: 14:30, o 'salir'): ").strip()
+        if hora_entrada.lower() == "salir":
+            print("❌ Registro cancelado.")
+            return
+        if hora_entrada:
+            break
+        print("❌ La hora de entrada es obligatoria. Por favor, intente de nuevo.")
     
     # Hora planeada de salida en formato HH:MM
-    hora_salida = input("Hora planeada de salida (ej: 15:30): ").strip()
-    if not hora_salida:
-        print("❌ La hora de salida es obligatoria.")
-        return
+    # Pide nuevamente si el campo está vacío
+    while True:
+        hora_salida = input("Hora planeada de salida (ej: 15:30, o 'salir'): ").strip()
+        if hora_salida.lower() == "salir":
+            print("❌ Registro cancelado.")
+            return
+        if hora_salida:
+            break
+        print("❌ La hora de salida es obligatoria. Por favor, intente de nuevo.")
     
     # ============ CAPTURA DE DATOS DEL VEHÍCULO (OPCIONAL) ============
     # Se pregunta si el visitante ingresa con vehículo
-    con_vehiculo = input("¿El visitante ingresa con vehículo? (S/N): ").upper()
+    # Usa un bucle para validar que la respuesta sea 'S' o 'N'
+    # Permite escribir "salir" para cancelar el registro
+    while True:
+        con_vehiculo = input("¿El visitante ingresa con vehículo? (S/N, o 'salir' para cancelar): ").strip().upper()
+        if con_vehiculo == "SALIR":
+            print("❌ Registro cancelado.")
+            return
+        if con_vehiculo in ["S", "N"]:
+            break
+        print("❌ Respuesta inválida. Debe ser 'S' o 'N'. Por favor, intente de nuevo.")
+
     datos_vehiculo = None
-    
-    # Si llegó con vehículo, se capturan los datos del mismo
     if con_vehiculo == "S":
-        placa = input("Placa del vehículo: ").strip()
-        marca = input("Marca del vehículo: ").strip()
-        modelo = input("Modelo del vehículo: ").strip()
-        color = input("Color del vehículo: ").strip()
-        tipo = input("Tipo de vehículo (automóvil, motocicleta, etc): ").strip()
+        # Si ingresa con vehículo, captura los datos del vehículo
+        # Cada campo pide nuevamente si está vacío
+        # Permite escribir "salir" para cancelar el registro
+        while True:
+            placa = input("Placa del vehículo (o 'salir'): ").strip()
+            if placa.lower() == "salir":
+                print("❌ Registro cancelado.")
+                return
+            if placa:
+                break
+            print("❌ La placa es obligatoria. Por favor, intente de nuevo.")
         
-        # Se crea un diccionario con toda la información del vehículo
+        while True:
+            marca = input("Marca del vehículo (o 'salir'): ").strip()
+            if marca.lower() == "salir":
+                print("❌ Registro cancelado.")
+                return
+            if marca:
+                break
+            print("❌ La marca es obligatoria. Por favor, intente de nuevo.")
+        
+        while True:
+            modelo = input("Modelo del vehículo (o 'salir'): ").strip()
+            if modelo.lower() == "salir":
+                print("❌ Registro cancelado.")
+                return
+            if modelo:
+                break
+            print("❌ El modelo es obligatorio. Por favor, intente de nuevo.")
+        
+        while True:
+            color = input("Color del vehículo (o 'salir'): ").strip()
+            if color.lower() == "salir":
+                print("❌ Registro cancelado.")
+                return
+            if color:
+                break
+            print("❌ El color es obligatorio. Por favor, intente de nuevo.")
+        
+        while True:
+            tipo = input("Tipo de vehículo (automóvil, motocicleta, etc, o 'salir'): ").strip()
+            if tipo.lower() == "salir":
+                print("❌ Registro cancelado.")
+                return
+            if tipo:
+                break
+            print("❌ El tipo es obligatorio. Por favor, intente de nuevo.")
+        
         datos_vehiculo = {
             "placa": placa,
             "marca": marca,
             "modelo": modelo,
             "color": color,
-            "tipo": tipo
+            "tipo": tipo,
         }
     
     # ============ CREACIÓN DEL REGISTRO DE VISITA ============
@@ -496,7 +576,7 @@ def visitantes_dentro_edificio():
     """
     # Filtra solo las visitas que están "dentro" del edificio
     visitantes_activos = [v for v in visitas if v['estado'] == "dentro"]
-    
+
     if not visitantes_activos:
         print("\n✅ No hay visitantes dentro del edificio en este momento.")
         return
